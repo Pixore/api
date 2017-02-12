@@ -1,7 +1,7 @@
-exports.ensureAuth = function ensureAuth(req, res, next) {
+exports.ensureAuth = function ensureAuth (req, res, next) {
   if (req.isAuthenticated()) {
-    return next();
+    return next()
   }
 
-  res.status(401).send({error: 'Unauthorized'});
-};
+  res.status(401).send({error: 'Unauthorized'})
+}

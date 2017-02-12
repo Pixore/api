@@ -1,9 +1,9 @@
-const moment = require('moment');
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const moment = require('moment')
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-function getFormatNow() {
-  return moment().format('LLL');
+function getFormatNow () {
+  return moment().format('LLL')
 }
 
 const editorSchema = new Schema({
@@ -23,6 +23,6 @@ const editorSchema = new Schema({
   },
   layout: Schema.Types.Mixed,
   sprites: [{type: Schema.Types.ObjectId, ref: 'Sprite'}]
-}, {timestamps: true});
+}, {timestamps: true})
 
-module.exports = editorSchema;
+module.exports = editorSchema

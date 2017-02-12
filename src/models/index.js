@@ -1,26 +1,26 @@
 
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-mongoose.Promise = require('bluebird');
+mongoose.Promise = require('bluebird')
 
-const { userSchema } = require('./user.js');
-const spriteSchema = require('./sprite.js');
-const spriteHistorySchema = require('./spriteHistory');
-const paletteSchema = require('./palette.js');
-const editorSchema = require('./editor.js');
+const { userSchema } = require('./user.js')
+const spriteSchema = require('./sprite.js')
+const spriteHistorySchema = require('./spriteHistory')
+const paletteSchema = require('./palette.js')
+const editorSchema = require('./editor.js')
 
-const Sprite = mongoose.model('Sprite', spriteSchema);
-const SpriteHistory = mongoose.model('SpriteHistory', spriteHistorySchema);
-const Palette = mongoose.model('Palette', paletteSchema);
-const User = mongoose.model('User', userSchema);
-const Editor = mongoose.model('Editor', editorSchema);
+const Sprite = mongoose.model('Sprite', spriteSchema)
+const SpriteHistory = mongoose.model('SpriteHistory', spriteHistorySchema)
+const Palette = mongoose.model('Palette', paletteSchema)
+const User = mongoose.model('User', userSchema)
+const Editor = mongoose.model('Editor', editorSchema)
 
 User.findOrCreate({username: 'anonymous'}, {
   username: 'anonymous',
   displayName: 'Anonymous',
   email: 'anonymous@pixore.com',
   twitterID: 0
-});
+})
 
 module.exports = {
   User,
@@ -28,4 +28,4 @@ module.exports = {
   Palette,
   Editor,
   SpriteHistory
-};
+}

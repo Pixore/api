@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const spriteSchema = new Schema({
   title: {type: String, required: true},
@@ -15,10 +15,10 @@ const spriteSchema = new Schema({
   available: Boolean,
   file: String,
   preview: String
-});
+})
 
 spriteSchema.statics.getAll = function (cb) {
-  return this.find({available: true, private: false}, cb).select({ 
+  return this.find({available: true, private: false}, cb).select({
     _id: 1,
     title: 1,
     user: 1,
@@ -28,11 +28,11 @@ spriteSchema.statics.getAll = function (cb) {
     type: 1,
     frames: 1,
     preview: 1
-  });
-};
+  })
+}
 
 spriteSchema.statics.getOne = function (conditions, cb) {
-  return this.findOne(conditions, cb).select({ 
+  return this.findOne(conditions, cb).select({
     _id: 1,
     title: 1,
     user: 1,
@@ -42,7 +42,7 @@ spriteSchema.statics.getOne = function (conditions, cb) {
     type: 1,
     frames: 1,
     preview: 1
-  });
-};
+  })
+}
 
-module.exports = spriteSchema;
+module.exports = spriteSchema

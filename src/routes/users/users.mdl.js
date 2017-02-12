@@ -1,9 +1,9 @@
-const Joi = require('joi');
+const Joi = require('joi')
 
-const validate = require('../../components/utils/validateSchema');
-const identicons = require('../../components/utils/identicons.js');
-const { User } = require('../../models');
-Joi.objectId = require('joi-objectid')(Joi);
+const validate = require('../../components/utils/validateSchema')
+const identicons = require('../../components/utils/identicons.js')
+const { User } = require('../../models')
+Joi.objectId = require('joi-objectid')(Joi)
 
 const userSchema = Joi.object().keys({
   _id: Joi.objectId(),
@@ -13,7 +13,7 @@ const userSchema = Joi.object().keys({
   createdAt: Joi.date(),
   twitterID: Joi.any(),
   profileImage: Joi.string()
-});
+})
 
 exports.create = data =>
   validate(data, userSchema, 'username', 'displayName')
@@ -22,27 +22,27 @@ exports.create = data =>
       return identicons.generate({
         hash: user._id
       }).then(url => {
-        user.profileImage = url;
-        return user.save();
-      });
-    });
+        user.profileImage = url
+        return user.save()
+      })
+    })
 
-exports.getAll = () => User.getAll();
+exports.getAll = () => User.getAll()
 
-exports.findOneByUsername = username => User.getOne({username});
+exports.findOneByUsername = username => User.getOne({username})
 
 exports.findByUsernameOrCreate = (username, data) =>
   validate(data, userSchema)
-    .then(data => User.findOrCreate({username}, data));
+    .then(data => User.findOrCreate({username}, data))
 
 exports.findOne = id =>
   validate({_id: id}, userSchema, '_id')
-    .then(data => User.getOne(data));
+    .then(data => User.getOne(data))
 
-exports.getSearch = query => User.getSearch(query);
+exports.getSearch = query => User.getSearch(query)
 
-exports.findByTwitterID = twitterID => User.findOne({twitterID});
+exports.findByTwitterID = twitterID => User.findOne({twitterID})
 
 exports.update = (id, data) =>
   validate(data, userSchema)
-    .then(data => User.findByIdAndUpdate(id, {$set: data}, {new: true}));
+    .then(data => User.findByIdAndUpdate(id, {$set: data}, {new: true}))
