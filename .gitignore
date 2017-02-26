@@ -7,6 +7,8 @@ stats.json
 .env*
 .env.json
 
+files/*
+
 npm-debug.log*
 
 # Runtime data
