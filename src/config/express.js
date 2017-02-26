@@ -9,9 +9,7 @@ const MongoStore = require('connect-mongo')(session)
 const { dbPromise } = require('../components/connect.js')
 
 module.exports = function (app) {
-  // if (!config.isTest) {
   app.use(morgan('dev'))
-  // }
   app.use(cookieParser(config.secret))
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
