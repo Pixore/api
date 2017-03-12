@@ -1,10 +1,12 @@
-const config = require('../../config/environment')
+// const config = require('../../config/environment')
 const path = require('path')
 const fs = require('fs')
 const PNG = require('pngjs').PNG
 const crypto = require('crypto')
 const Promise = require('bluebird')
-const { hexToRgb } = require('./color.js')
+const { hexToRgb } = require('./color')
+const { pngUpload } = require('./s3')
+const { PassThrough } = require('stream')
 
 function getRealPosition (width, x, y) {
   return (width * y + x) << 2
@@ -62,7 +64,7 @@ function makeBitmapFromHash (size, hash) {
   return bitmap
 }
 
-exports.generate = function ({hash, name, isBlack = true}) {
+exports.generate = ({hash, name, isBlack = true}) => new Promise((resolve, reject) => {
   let bgColor, imgBase
   hash = crypto.createHash('sha256').update(hash.toString()).digest('hex')
   name = name || Date.now() + '.png'
@@ -74,20 +76,21 @@ exports.generate = function ({hash, name, isBlack = true}) {
     imgBase = 'white.png'
   }
 
-  return new Promise(function (resolve) {
-    const {png, width} = scalePaint(
-      makeBitmapFromHash(6, hash),
-      60,
-      '#' + hash.substr(hash.length - 6, hash.length),
-      bgColor
-    )
+  const {png, width} = scalePaint(
+    makeBitmapFromHash(6, hash),
+    60,
+    '#' + hash.substr(hash.length - 6, hash.length),
+    bgColor
+  )
+  fs.createReadStream(path.join(__dirname, imgBase))
+    .pipe(new PNG())
+    .on('parsed', function () {
+      const passthrough = new PassThrough()
+      png.bitblt(this, 0, 0, width, width, 20, 20)
+      this.pack().pipe(passthrough)
 
-    fs.createReadStream(path.join(__dirname, imgBase))
-      .pipe(new PNG())
-      .on('parsed', function () {
-        png.bitblt(this, 0, 0, width, width, 20, 20)
-        this.pack().pipe(fs.createWriteStream(path.join(config.FILES_PATH, name)))
-        resolve(path.join('/api/images/', name))
-      })
-  })
-}
+      pngUpload(passthrough, name)
+        .then(result => resolve(result.Location))
+        .catch(error => reject(error))
+    })
+})

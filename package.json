@@ -23,6 +23,7 @@
   "author": "Jose Albizures <albizures3601@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "aws-sdk": "^2.27.0",
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.1",
     "co": "^4.6.0",

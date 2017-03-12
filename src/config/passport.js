@@ -21,14 +21,10 @@ function TwitterStrategyCallback (token, tokenSecret, profile, done) {
   }).then(user => {
     userProfile._id = user._id
     return jwt.sign({_id: user._id}, config.secret, {})
-  }).then(token => {
-    done(null, {
-      _id: userProfile._id,
-      token
-    })
-  }).catch(function (err) {
-    done(err)
-  })
+  }).then(token => done(null, {
+    _id: userProfile._id,
+    token
+  })).catch(err => done(err))
 }
 
 const twitterStrategy = new TwitterStrategy(config.auth.twitter, TwitterStrategyCallback)
