@@ -4,6 +4,7 @@ const modelUsers = require('../users/users.mdl.js')
 const response = require('../../components/utils/response.js')
 const files = require('../../components/utils/files.js')
 const db = require('../../components/connect.js')
+const { pngUpload } = require('../../components/utils/s3.js')
 
 exports.isOwner = (req, res, next) => {
   model.getOne(req.params.id, req.user._id)
@@ -43,16 +44,16 @@ exports.post = (req, res) => co(function* () {
   })
   let file = req.files.shift()
   let namePreview = Date.now() + '.' + type
-  yield files.write(namePreview, file.buffer)
+  const urlPreview = yield pngUpload(file.buffer, namePreview)
 
   file = req.files.shift()
   let nameSpriteFile = Date.now() + '.png'
-  yield files.write(nameSpriteFile, file.buffer)
+  const urlFile = yield pngUpload(file.buffer, nameSpriteFile, false)
 
   return yield model.update(id, {
     available: true,
-    file: '/' + nameSpriteFile,
-    preview: '/' + namePreview
+    file: urlFile,
+    preview: urlPreview
   })
 }).then(response.created(res))
   .catch(response.serverError(res))

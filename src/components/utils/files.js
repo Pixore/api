@@ -10,21 +10,20 @@ function mkdir (folder, cb) {
     if (err && err.code === 'ENOENT') {
       return mkdir(path.dirname(folder), onMkParent, true)
     }
-    cb(response.commonResult(err, folder))
+    cb(err, folder)
   }
   function onMkParent () {
-    fs.mkdir(folder, err => cb(response.commonResult(err, folder)))
+    fs.mkdir(folder, err => cb(err, folder))
   }
 }
 
-const write = (file, data, cb) => new Promise((resolve, reject) => {
+const write = (file, data) => new Promise((resolve, reject) => {
   file = path.join(config.FILES_PATH, file)
   write()
 
-  function write (result) {
-    if (result && result.code !== 0 && result.description && result.description.code !== 'EEXIST') {
-      if (cb) return cb(result)
-      reject(result)
+  function write (err) {
+    if (err && err.code !== 'EEXIST') {
+      return reject(err)
     }
     fs.writeFile(
       file,
@@ -36,7 +35,6 @@ const write = (file, data, cb) => new Promise((resolve, reject) => {
     if (err && err.code === 'ENOENT') {
       return mkdir(path.dirname(file), write)
     }
-    if (cb) return cb(response.commonResult(err, file))
     if (err) reject(err)
     resolve(file)
   }

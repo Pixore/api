@@ -90,7 +90,7 @@ exports.generate = ({hash, name, isBlack = true}) => new Promise((resolve, rejec
       this.pack().pipe(passthrough)
 
       pngUpload(passthrough, name)
-        .then(result => resolve(result.Location))
+        .then(result => resolve(result))
         .catch(error => reject(error))
     })
 })
