@@ -18,8 +18,7 @@ const editorSchema = new Schema({
   },
   palette: {
     type: Schema.Types.ObjectId,
-    ref: 'Palette',
-    required: true
+    ref: 'Palette'
   },
   layout: Schema.Types.Mixed,
   sprites: [{type: Schema.Types.ObjectId, ref: 'Sprite'}]
