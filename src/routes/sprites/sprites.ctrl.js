@@ -4,7 +4,7 @@ const modelUsers = require('../users/users.mdl.js')
 const response = require('../../components/utils/response.js')
 const files = require('../../components/utils/files.js')
 const db = require('../../components/connect.js')
-const { pngUpload } = require('../../components/utils/s3.js')
+const { pngUpload, getPng } = require('../../components/utils/s3.js')
 
 exports.isOwner = (req, res, next) => {
   model.getOne(req.params.id, req.user._id)
@@ -44,16 +44,16 @@ exports.post = (req, res) => co(function* () {
   })
   let file = req.files.shift()
   let namePreview = Date.now() + '.' + type
-  const urlPreview = yield pngUpload(file.buffer, namePreview)
+  const { Location } = yield pngUpload(file.buffer, namePreview)
 
   file = req.files.shift()
   let nameSpriteFile = Date.now() + '.png'
-  const urlFile = yield pngUpload(file.buffer, nameSpriteFile, false)
+  const { Key } = yield pngUpload(file.buffer, nameSpriteFile, false)
 
   return yield model.update(id, {
     available: true,
-    file: urlFile,
-    preview: urlPreview
+    file: Key,
+    preview: Location
   })
 }).then(response.created(res))
   .catch(response.serverError(res))
@@ -64,25 +64,24 @@ exports.getHistory = (req, res) =>
     .catch(response.serverError(res))
 
 exports.getFile = function (req, res) {
-  model.getSearch({
-    _id: db.newId(req.params.id),
-    user: req.user._id
-  }, {
-    file: 1
-  }, onSearch)
-  function onSearch (result) {
-    if (result.code !== 0) {
-      return res.status(500).end()
-    }
-    res.sendFile(files.join(files.FILES_PATH, result.data.file), function (err) {
-      if (err) {
-        console.log(err)
-        res.status(err.status).end()
-      } else {
-        console.log('Sent:', result.data.file)
-      }
-    })
-  }
+  model.getOne(
+    req.params.id,
+    req.user._id
+  )
+  .then(sprite => {
+    console.log(
+      sprite,
+      req.params.id,
+      req.user._id
+    )
+    return sprite
+  })
+  .then(sprite => getPng(sprite.file))
+  .then(file => {
+    res.setHeader('Content-type', file.ContentType)
+    res.send(file.Body)
+  })
+  .catch(response.serverError(res))
 }
 
 exports.getOne = (req, res) => {
