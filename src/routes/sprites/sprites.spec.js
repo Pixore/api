@@ -63,7 +63,7 @@ describe('sprites', function () {
     req
       .post('/api/sprites')
       .field('body', JSON.stringify({
-        title: 'new sprite',
+        name: 'new sprite',
         width: 10,
         height: 10,
         private: false,
@@ -81,7 +81,7 @@ describe('sprites', function () {
         id = res.body._id
         expect(res.body).to.have.any.keys('preview', 'file')
         expect(res.body.user).to.equal(user._id.toString())
-        expect(res.body.title).to.equal('new sprite')
+        expect(res.body.name).to.equal('new sprite')
         expect(res.body.width).to.equal(10)
         expect(res.body.height).to.be.equal(10)
         expect(res.body.private).to.be.false
@@ -103,7 +103,7 @@ describe('sprites', function () {
         expect(res.body).to.have.any.keys('preview', 'file')
         expect(res.body.private).to.be.a('boolean')
         expect(res.body.user).to.equal(user._id.toString())
-        expect(res.body.title).to.equal('new sprite')
+        expect(res.body.name).to.equal('new sprite')
         expect(res.body.width).to.equal(10)
         expect(res.body.height).to.be.equal(10)
         expect(res.body.colors).to.deep.equal(['#000', '#fff'])
@@ -129,7 +129,7 @@ describe('sprites', function () {
     req
       .put('/api/sprites/' + id)
       .field('body', JSON.stringify({
-        title: 'new title sprite',
+        name: 'new name sprite',
         width: 14,
         height: 10,
         private: false,
@@ -148,7 +148,7 @@ describe('sprites', function () {
         console.log('update', res.body)
         expect(res.body).to.have.any.keys('preview', 'file')
         expect(res.body.user).to.equal(user._id.toString())
-        expect(res.body.title).to.equal('new title sprite')
+        expect(res.body.name).to.equal('new name sprite')
         expect(res.body.width).to.equal(14)
         expect(res.body.height).to.be.equal(10)
         expect(res.body.private).to.be.false
@@ -184,7 +184,7 @@ describe('sprites', function () {
         expect(res.body.file).to.be.undefined
         expect(res.body.private).to.be.undefined
         expect(res.body.user).to.equal(user._id.toString())
-        expect(res.body.title).to.equal('new title sprite')
+        expect(res.body.name).to.equal('new name sprite')
         expect(res.body.width).to.equal(14)
         expect(res.body.height).to.be.equal(10)
         expect(res.body.colors).to.deep.equal(['#f00', '#fff'])
@@ -210,7 +210,7 @@ describe('sprites', function () {
     req
       .post('/api/sprites')
       .field('body', JSON.stringify({
-        title: 'new sprite',
+        name: 'new sprite',
         width: 10,
         height: 10,
         private: false,
@@ -227,7 +227,7 @@ describe('sprites', function () {
       .end(function (err, res) {
         id = res.body._id
         expect(res.body).to.have.any.keys('preview', 'file')
-        expect(res.body.title).to.equal('new sprite')
+        expect(res.body.name).to.equal('new sprite')
         expect(res.body.width).to.equal(10)
         expect(res.body.height).to.be.equal(10)
         expect(res.body.private).to.be.false
@@ -243,7 +243,7 @@ describe('sprites', function () {
     req
       .put('/api/sprites/' + id)
       .field('body', JSON.stringify({
-        title: 'new title sprite',
+        name: 'new name sprite',
         width: 14,
         height: 10,
         private: false,

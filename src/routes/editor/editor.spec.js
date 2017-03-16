@@ -21,7 +21,7 @@ describe('/api/editor/', function () {
         user = _user
         passportStub.login(user)
         return Palette.create({
-          title: 'new palette',
+          name: 'new palette',
           user: user._id,
           colors: ['#ff0']
         })
@@ -98,7 +98,7 @@ describe('/api/editor/', function () {
     req.post('/api/editor/', 201, function (err, res) {
       lastEditor = res.body
       expect(res.body.user).to.equal(user._id.toString())
-      expect(res.body.title).to.be.a('string')
+      expect(res.body.name).to.be.a('string')
       expect(res.body.sprites).to.deep.equal([])
       expect(res.body.layout).to.deep.equal({test: 'test'})
       expect(res.body.palette).to.equal(palette._id.toString())
@@ -116,7 +116,7 @@ describe('/api/editor/', function () {
     passportStub.login(user)
     req.put('/api/editor/' + lastEditor._id, 200, function (err, res) {
       expect(res.body.user).to.equal(user._id.toString())
-      expect(res.body.title).to.be.a('string')
+      expect(res.body.name).to.be.a('string')
       expect(res.body.sprites).to.deep.equal([])
       expect(res.body.layout).to.deep.equal({test2: 'test2'})
       expect(res.body.palette).to.equal(palette._id.toString())

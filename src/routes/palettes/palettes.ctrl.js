@@ -28,7 +28,7 @@ exports.post = (req, res) => co(function* () {
   }
 
   let palette = yield model.create({
-    title: req.body.title,
+    name: req.body.name,
     user: user,
     colors: req.body.colors,
     private: req.body.private
@@ -65,6 +65,6 @@ exports.getSearch = function (req, res) {
 exports.put = (req, res) =>
   model.update(
     req.params.id,
-    _.pick(req.body, ['title', 'colors', 'private'])
+    _.pick(req.body, ['name', 'colors', 'private'])
   ).then(response.OK(res))
     .catch(response.serverError(res))

@@ -11,7 +11,7 @@ const spriteHistorySchema = Joi.object().keys({
 const spriteSchema = Joi.object().keys({
   _id: Joi.object(),
   user: Joi.object(),
-  title: Joi.string(),
+  name: Joi.string(),
   width: Joi.number(),
   height: Joi.number(),
   private: Joi.boolean().default(false, 'public by default'),
@@ -32,7 +32,7 @@ exports.getPublic = () =>
 
 exports.create = data =>
   validate(data, spriteSchema,
-    'user', 'title', 'with',
+    'user', 'name', 'with',
     'height', 'private', 'colors',
     'type', 'frames', 'layers'
   ).then(data => Sprite.create(data))

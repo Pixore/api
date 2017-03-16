@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const paletteSchema = new Schema({
-  title: {
+  name: {
     type: String,
     required: true
   },
@@ -25,7 +25,7 @@ const paletteSchema = new Schema({
 
 paletteSchema.statics.getAll = function (cb) {
   return this.find({available: true}, cb).select({
-    title: 1,
+    name: 1,
     user: 1,
     private: 1,
     colors: 1

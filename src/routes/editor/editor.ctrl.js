@@ -28,7 +28,7 @@ exports.getAll = (req, res) =>
     .catch(response.serverError(res))
 
 exports.put = (req, res) => {
-  model.update(req.params.id, pick(req.body, ['title', 'palette', 'layout', 'sprites']))
+  model.update(req.params.id, pick(req.body, ['name', 'palette', 'layout', 'sprites']))
     .then(response.OK(res))
     .catch(response.serverError(res))
 }

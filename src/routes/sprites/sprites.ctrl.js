@@ -33,7 +33,7 @@ exports.post = (req, res) => co(function* () {
 
   var {_id: id} = yield model.create({
     user,
-    title: req.body.title,
+    name: req.body.name,
     width: req.body.width,
     height: req.body.height,
     private: req.body.private,
@@ -133,7 +133,7 @@ exports.put = (req, res) => co(function *() {
     preview: previewTemp
   })
   sprite = yield model.update(sprite._id, {
-    title: req.body.title || sprite.title,
+    name: req.body.name || sprite.name,
     width: req.body.width || sprite.width,
     height: req.body.height || sprite.height,
     private: req.body.private || sprite.private,

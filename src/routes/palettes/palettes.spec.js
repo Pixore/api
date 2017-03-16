@@ -52,14 +52,14 @@ describe('palettes', function () {
       .expect('Content-Type', /json/)
       .expect(201)
       .send({
-        title: 'test palette',
+        name: 'test palette',
         colors: ['#00f', '#ff0'],
         private: false
       })
       .end(function (err, res) {
         palette = res.body
         expect(palette.user).to.equal(user._id.toString())
-        expect(palette.title).to.equal('test palette')
+        expect(palette.name).to.equal('test palette')
         expect(palette.colors).to.deep.equal(['#00f', '#ff0'])
         expect(palette.private).to.be.false
         expect(err).to.be.null
@@ -74,7 +74,7 @@ describe('palettes', function () {
       .expect(200)
       .end(function (err, res) {
         expect(res.body.user).to.equal(user._id.toString())
-        expect(res.body.title).to.equal('test palette')
+        expect(res.body.name).to.equal('test palette')
         expect(res.body.colors).to.deep.equal(['#00f', '#ff0'])
         expect(res.body.private).to.be.false
         expect(err).to.be.null
@@ -90,7 +90,7 @@ describe('palettes', function () {
       .expect(200)
       .end(function (err, res) {
         expect(res.body.user).to.equal(user._id.toString())
-        expect(res.body.title).to.equal('test palette')
+        expect(res.body.name).to.equal('test palette')
         expect(res.body.colors).to.deep.equal(['#00f', '#ff0'])
         expect(res.body.private).to.be.undefined
         expect(err).to.be.null
@@ -110,7 +110,7 @@ describe('palettes', function () {
       .end(function (err, res) {
         console.log('PUT private', res.body)
         expect(res.body.user).to.equal(user._id.toString())
-        expect(res.body.title).to.equal('test palette')
+        expect(res.body.name).to.equal('test palette')
         expect(res.body.colors).to.deep.equal(['#00f', '#ff0'])
         expect(res.body.private).to.be.true
         expect(err).to.be.null
@@ -138,11 +138,11 @@ describe('palettes', function () {
       .expect('Content-Type', /json/)
       .expect(200)
       .send({
-        title: 'test name palette'
+        name: 'test name palette'
       })
       .end(function (err, res) {
         expect(res.body.user).to.equal(user._id.toString())
-        expect(res.body.title).to.equal('test name palette')
+        expect(res.body.name).to.equal('test name palette')
         expect(res.body.colors).to.deep.equal(['#00f', '#ff0'])
         expect(res.body.private).to.be.true
         expect(err).to.be.null
@@ -157,12 +157,12 @@ describe('palettes', function () {
       .expect('Content-Type', /json/)
       .expect(201)
       .send({
-        title: 'test anonymous palette',
+        name: 'test anonymous palette',
         colors: ['#f00', '#ff0'],
         private: false
       })
       .end(function (err, res) {
-        expect(res.body.title).to.equal('test anonymous palette')
+        expect(res.body.name).to.equal('test anonymous palette')
         expect(res.body.colors).to.deep.equal(['#f00', '#ff0'])
         expect(res.body.private).to.be.false
         expect(err).to.be.null

@@ -7,7 +7,7 @@ function getFormatNow () {
 }
 
 const editorSchema = new Schema({
-  title: {
+  name: {
     type: String,
     default: getFormatNow
   },
