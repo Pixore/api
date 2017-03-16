@@ -2,8 +2,6 @@ const co = require('co')
 const model = require('./sprites.mdl.js')
 const modelUsers = require('../users/users.mdl.js')
 const response = require('../../components/utils/response.js')
-const files = require('../../components/utils/files.js')
-const db = require('../../components/connect.js')
 const { pngUpload, getPng } = require('../../components/utils/s3.js')
 
 exports.isOwner = (req, res, next) => {
@@ -122,11 +120,11 @@ exports.put = (req, res) => co(function *() {
 
   let previewTemp = sprite.preview
   let fileTemp = sprite.file
-  yield files.write(namePreview, file.buffer)
+  const { Location } = yield pngUpload(file.buffer, namePreview)
 
   file = req.files.shift()
   let nameSpriteFile = Date.now() + '.png'
-  yield files.write(nameSpriteFile, file.buffer)
+  const { Key } = yield pngUpload(file.buffer, nameSpriteFile, false)
 
   let history = yield model.createHistory({
     file: fileTemp,
@@ -141,8 +139,8 @@ exports.put = (req, res) => co(function *() {
     type: type || sprite.type,
     frames: req.body.frames || sprite.frames,
     layers: req.body.layers || sprite.layers,
-    file: '/' + nameSpriteFile,
-    preview: '/' + namePreview,
+    file: Key,
+    preview: Location,
     history: [history].concat(sprite.history)
   })
 
