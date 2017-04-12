@@ -8,7 +8,7 @@
     "server": "nodemon ./src/index.js",
     "start": "env-cmd ./.env concurrently \"npm run server\"",
     "lint": "eslint ./src",
-    "test:mocha": "mocha ./src/server/**/*.spec.js",
+    "test:mocha": "mocha ./src/**/*.spec.js",
     "test:main": "npm run lint && npm run test:mocha",
     "test": "env-cmd ./.env.test npm run test:main"
   },
@@ -59,6 +59,7 @@
     "get-port": "^2.1.0",
     "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
+    "nyc": "^10.2.0",
     "rimraf": "^2.5.4",
     "supertest": "^2.0.1"
   }

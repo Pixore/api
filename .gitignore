@@ -6,7 +6,7 @@ stats.json
 
 .env*
 .env.json
-
+.nyc_output
 files/*
 
 npm-debug.log*
