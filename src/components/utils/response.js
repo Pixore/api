@@ -58,7 +58,7 @@ exports.OK = res => result => {
 }
 
 exports.serverError = res => err => {
-  console.log('error', err)
+  console.trace('error', err)
   res.setHeader('Content-Type', 'application/json')
   res.status(500).json(err)
 }
