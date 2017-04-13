@@ -9,7 +9,7 @@ const passportStub = require('../../components/utils/passportStub.js')
 const req = request(app)
 let user
 
-describe.only('sprites', function () {
+describe('sprites', function () {
   before(() => Promise.all([
     SpriteHistory.remove({}),
     Sprite.remove({}),
