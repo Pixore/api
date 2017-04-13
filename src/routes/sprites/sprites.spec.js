@@ -9,7 +9,7 @@ const passportStub = require('../../components/utils/passportStub.js')
 const req = request(app)
 let user
 
-describe('sprites', function () {
+describe.only('sprites', function () {
   before(() => Promise.all([
     SpriteHistory.remove({}),
     Sprite.remove({}),
@@ -22,7 +22,12 @@ describe('sprites', function () {
         passportStub.login(user)
       })
   ]))
+  after(() => Promise.all([
+    Sprite.remove({}),
+    SpriteHistory.remove({})
+  ]))
   let id
+  // let idHistory
   it('GET / empty array', done => {
     req
       .get('/api/sprites')
@@ -144,8 +149,7 @@ describe('sprites', function () {
       .expect('Content-Type', /json/)
       .expect(200)
       .end(function (err, res) {
-        id = res.body._id
-        console.log('update', res.body)
+        // idHistory = res.body._id
         expect(res.body).to.have.any.keys('preview', 'file')
         expect(res.body.user).to.equal(user._id.toString())
         expect(res.body.name).to.equal('new name sprite')
@@ -173,13 +177,15 @@ describe('sprites', function () {
       })
   })
   it('GET /:id public', done => {
-    passportStub.logout(user)
+    passportStub.logout()
     req
       .get('/api/sprites/' + id)
       .set('Connection', 'keep-alive')
       .expect('Content-Type', /json/)
       .expect(200)
       .end(function (err, res) {
+        console.log('public result', res.body, id, err)
+        expect(err).to.be.null
         expect(res.body).to.have.any.keys('preview')
         expect(res.body.file).to.be.undefined
         expect(res.body.private).to.be.undefined
@@ -190,11 +196,11 @@ describe('sprites', function () {
         expect(res.body.colors).to.deep.equal(['#f00', '#fff'])
         expect(res.body.type).to.be.equal('gif')
         expect(res.body.frames).to.be.equal(2)
-        expect(err).to.be.null
         done()
       })
   })
   it('GET /:id/history Unauthorized', done => {
+    passportStub.logout()
     req
       .get('/api/sprites/' + id + '/history')
       .set('Connection', 'keep-alive')

@@ -75,4 +75,5 @@ exports.login = function (user) {
 
 exports.logout = function () {
   this.active = false
+  this.user = undefined
 }

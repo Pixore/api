@@ -3,7 +3,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 const path = require('path')
 
 const config = {}
-config.MONGODB_URI = 'mongodb://mongodb/pixore'
+config.MONGODB_URI = process.env.MONGODB_URI || 'mongodb://mongodb/pixore'
 config.PORT = Number(process.env.PORT) || 80
 config.isDev = process.env.NODE_ENV === 'development'
 config.isTest = process.env.NODE_ENV === 'test'

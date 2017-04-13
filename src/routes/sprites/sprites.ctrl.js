@@ -84,6 +84,7 @@ exports.getFile = function (req, res) {
 
 exports.getOne = (req, res) => {
   var promise
+  console.log('get one', req.user, req.params.id)
   if (req.user) {
     promise = model
       .getOne(req.params.id, req.user._id)
