@@ -8,24 +8,26 @@ const { User } = require('../../models')
 
 const req = request(app)
 
+let user
+
 describe('auth', () => {
-  before(function () {
-    User.remove({})
-      .then(() => User.create({
-        username: 'testuser',
-        displayName: 'Test user'
-      })).then(user => {
-        passportStub.login(user)
-      })
-  })
+  before(() => User.remove({})
+    .then(() => User.create({
+      username: 'testuser',
+      displayName: 'Test user'
+    })).then(_user => {
+      user = _user
+    }))
+
+  after(() => User.remove({}))
   it('GET /whoami Somebody', done => {
+    passportStub.login(user)
     req
       .get('/api/auth/whoami')
       .set('Connection', 'keep-alive')
       .expect('Content-Type', /json/)
       .expect(200)
       .end(function (err, res) {
-        console.log(err, res.body)
         expect(res.body).to.have.any.keys('username', '_id', 'displayName', 'profileImage')
         expect(err).to.be.null
         done()
