@@ -72,6 +72,9 @@
     "branches": 99,
     "reporter": [
       "html"
+    ],
+    "exclude": [
+      "src/config/passport.js"
     ]
   }
 }

@@ -10,7 +10,4 @@ exports.dbPromise = MongoClient.connect(url)
 
 exports.ObjectID = ObjectID
 
-exports.newId = function (id) {
-  return new ObjectID(id)
-}
 exports.validId = ObjectID.isValid

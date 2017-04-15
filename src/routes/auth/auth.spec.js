@@ -2,7 +2,6 @@ const passportStub = require('../../components/utils/passportStub.js')
 
 const { expect } = require('chai')
 const request = require('supertest')
-// const Promise = require('bluebird')
 const app = require('../../index')
 const { User } = require('../../models')
 

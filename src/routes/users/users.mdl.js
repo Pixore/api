@@ -19,9 +19,9 @@ exports.create = data =>
   validate(data, userSchema, 'username', 'displayName')
     .then(data => User.create(data))
     .then(user => {
-      return identicons.generate({
-        hash: user._id
-      }).then(url => {
+      return identicons.generate(
+        user._id
+      ).then(url => {
         user.profileImage = url
         return user.save()
       })
