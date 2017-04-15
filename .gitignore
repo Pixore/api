@@ -3,6 +3,7 @@
 logs
 *.log
 stats.json
+build
 
 .env*
 .env.json

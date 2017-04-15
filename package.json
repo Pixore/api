@@ -5,6 +5,7 @@
   "main": "index.js",
   "homepage": "http://pixelzstudio.com",
   "scripts": {
+    "build": "mkdir ./build && cp -r src/ ./build/src && cp package.json ./build/ && cp yarn.lock ./build/",
     "server": "nodemon ./src/index.js",
     "start": "env-cmd ./.env concurrently \"npm run server\"",
     "lint": "eslint ./src",
