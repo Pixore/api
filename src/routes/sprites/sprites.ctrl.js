@@ -84,6 +84,7 @@ exports.getFile = function (req, res) {
 
 exports.getOne = (req, res) => {
   var promise
+  console.log('get one', req.user, req.params.id)
   if (req.user) {
     promise = model
       .getOne(req.params.id, req.user._id)
@@ -107,9 +108,10 @@ exports.getAll = (req, res) =>
     .then(response.OK(res))
     .catch(response.serverError(res))
 
-exports.getSearch = function (req, res) {
-  response.commonData(res, model.getSearch, req.query)
-}
+exports.getSearch = (req, res) =>
+  model.getSearch(req.query)
+    .then(response.OK(res))
+    .catch(response.serverError(res))
 
 exports.put = (req, res) => co(function *() {
   let id = req.params.id

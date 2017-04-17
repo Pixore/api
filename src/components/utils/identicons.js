@@ -64,10 +64,12 @@ function makeBitmapFromHash (size, hash) {
   return bitmap
 }
 
-exports.generate = ({hash, name, isBlack = true}) => new Promise((resolve, reject) => {
+exports.generate = (hash, name, isBlack = true) => new Promise((resolve, reject) => {
   let bgColor, imgBase
+  if (typeof hash === 'string') return reject(new Error('`hash` has to be a string'))
+
   hash = crypto.createHash('sha256').update(hash.toString()).digest('hex')
-  name = name || Date.now() + '.png'
+  name = (name || Date.now()) + '.png'
   if (isBlack) {
     bgColor = {rDef: 0, gDef: 0, bDef: 0}
     imgBase = 'black.png'
@@ -90,7 +92,7 @@ exports.generate = ({hash, name, isBlack = true}) => new Promise((resolve, rejec
       this.pack().pipe(passthrough)
 
       pngUpload(passthrough, name)
-        .then(result => resolve(result))
+        .then(result => resolve(result.Location))
         .catch(error => reject(error))
     })
 })

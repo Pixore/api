@@ -1,4 +1,3 @@
-const express = require('express')
 const config = require('./environment')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
@@ -19,8 +18,6 @@ module.exports = function (app) {
     saveUninitialized: false,
     store: new MongoStore({dbPromise})
   }))
-  app.use(express.static(config.PUBLIC_PATH))
-  app.use(express.static(config.FILES_PATH))
 
   require('./passport.js')(app)
 }

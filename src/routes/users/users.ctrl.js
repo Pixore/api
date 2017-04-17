@@ -1,11 +1,6 @@
 const model = require('./users.mdl.js')
 const response = require('../../components/utils/response.js')
 
-exports.post = (req, res) =>
-  model.create(req.body)
-    .then(response.created(res))
-    .catch(response.serverError(res))
-
 exports.getOne = (req, res) =>
   model.findOne(req.params.id)
     .then(response.notFound(res))

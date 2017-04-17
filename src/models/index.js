@@ -3,6 +3,8 @@ const mongoose = require('mongoose')
 
 mongoose.Promise = require('bluebird')
 
+const { isTest } = require('../config/environment')
+
 const { userSchema } = require('./user.js')
 const spriteSchema = require('./sprite.js')
 const spriteHistorySchema = require('./spriteHistory')
@@ -15,12 +17,14 @@ const Palette = mongoose.model('Palette', paletteSchema)
 const User = mongoose.model('User', userSchema)
 const Editor = mongoose.model('Editor', editorSchema)
 
-User.findOrCreate({username: 'anonymous'}, {
-  username: 'anonymous',
-  displayName: 'Anonymous',
-  email: 'anonymous@pixore.com',
-  twitterID: 0
-})
+if (!isTest) {
+  User.findOrCreate({username: 'anonymous'}, {
+    username: 'anonymous',
+    displayName: 'Anonymous',
+    email: 'anonymous@pixore.com',
+    twitterID: 0
+  })
+}
 
 module.exports = {
   User,

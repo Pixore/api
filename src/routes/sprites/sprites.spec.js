@@ -2,12 +2,30 @@ const path = require('path')
 const { expect } = require('chai')
 const request = require('supertest')
 const Promise = require('bluebird')
+const nock = require('nock')
 const app = require('../../index')
 const { Sprite, SpriteHistory, User } = require('../../models')
 const passportStub = require('../../components/utils/passportStub.js')
 
 const req = request(app)
 let user
+
+nock(/amazonaws/)
+  .put(/\/([0-9]+.*)/)
+  .times(1000 /* I'm not sure why 1000 but... it works!!! */)
+  .reply(200, '', ['x-amz-id-2',
+    '87xNgA0AoA65Wyu0xehwEAodeZTN0XCGneZhVgphrxlS4DqXbjTimC3l9WUJrSWt5jv44FFFuQ4=',
+    'x-amz-request-id',
+    'CC561650A3FE851D',
+    'Date',
+    'Fri, 14 Apr 2017 17:32:40 GMT',
+    'ETag',
+    '"e90e12de82550661cdc042825e9470b2"',
+    'Content-Length',
+    '0',
+    'Server',
+    'AmazonS3'
+  ])
 
 describe('sprites', function () {
   before(() => Promise.all([
@@ -22,7 +40,12 @@ describe('sprites', function () {
         passportStub.login(user)
       })
   ]))
+  after(() => Promise.all([
+    Sprite.remove({}),
+    SpriteHistory.remove({})
+  ]))
   let id
+  // let idHistory
   it('GET / empty array', done => {
     req
       .get('/api/sprites')
@@ -60,6 +83,7 @@ describe('sprites', function () {
       })
   })
   it('POST / create a sprite', done => {
+    passportStub.login(user)
     req
       .post('/api/sprites')
       .field('body', JSON.stringify({
@@ -79,6 +103,7 @@ describe('sprites', function () {
       .expect(201)
       .end(function (err, res) {
         id = res.body._id
+        expect(err).to.be.null
         expect(res.body).to.have.any.keys('preview', 'file')
         expect(res.body.user).to.equal(user._id.toString())
         expect(res.body.name).to.equal('new sprite')
@@ -89,7 +114,6 @@ describe('sprites', function () {
         expect(res.body.type).to.be.equal('gif')
         expect(res.body.frames).to.be.equal(2)
         expect(res.body.layers).to.be.equal(5)
-        expect(err).to.be.null
         done()
       })
   })
@@ -144,8 +168,7 @@ describe('sprites', function () {
       .expect('Content-Type', /json/)
       .expect(200)
       .end(function (err, res) {
-        id = res.body._id
-        console.log('update', res.body)
+        // idHistory = res.body._id
         expect(res.body).to.have.any.keys('preview', 'file')
         expect(res.body.user).to.equal(user._id.toString())
         expect(res.body.name).to.equal('new name sprite')
@@ -173,13 +196,15 @@ describe('sprites', function () {
       })
   })
   it('GET /:id public', done => {
-    passportStub.logout(user)
+    passportStub.logout()
     req
       .get('/api/sprites/' + id)
       .set('Connection', 'keep-alive')
       .expect('Content-Type', /json/)
       .expect(200)
       .end(function (err, res) {
+        console.log('public result', res.body, id, err)
+        expect(err).to.be.null
         expect(res.body).to.have.any.keys('preview')
         expect(res.body.file).to.be.undefined
         expect(res.body.private).to.be.undefined
@@ -190,11 +215,11 @@ describe('sprites', function () {
         expect(res.body.colors).to.deep.equal(['#f00', '#fff'])
         expect(res.body.type).to.be.equal('gif')
         expect(res.body.frames).to.be.equal(2)
-        expect(err).to.be.null
         done()
       })
   })
   it('GET /:id/history Unauthorized', done => {
+    passportStub.logout()
     req
       .get('/api/sprites/' + id + '/history')
       .set('Connection', 'keep-alive')

@@ -12,7 +12,8 @@ module.exports = {
     'it': true,
     'describe': true,
     'before': true,
-    'beforeEach': true
+    'beforeEach': true,
+    'after': true
   },
   rules: {
     'id-length': ["error", { "exceptions": ['_', 'y', 'x', 'r', 'g', 'b', 'a', 'j', 'i']}],

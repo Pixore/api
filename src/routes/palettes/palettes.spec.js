@@ -39,7 +39,6 @@ describe('palettes', function () {
       .expect('Content-Type', /json/)
       .expect(404)
       .end(function (err, res) {
-        console.log(res.body)
         expect(err).to.be.null
         done()
       })
@@ -108,7 +107,6 @@ describe('palettes', function () {
         private: true
       })
       .end(function (err, res) {
-        console.log('PUT private', res.body)
         expect(res.body.user).to.equal(user._id.toString())
         expect(res.body.name).to.equal('test palette')
         expect(res.body.colors).to.deep.equal(['#00f', '#ff0'])
@@ -125,7 +123,6 @@ describe('palettes', function () {
       .expect('Content-Type', /json/)
       .expect(404)
       .end(function (err, res) {
-        console.log('NOT Found', res.body)
         expect(err).to.be.null
         done()
       })
