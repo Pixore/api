@@ -5,7 +5,7 @@
   "main": "index.js",
   "homepage": "http://pixelzstudio.com",
   "scripts": {
-    "prebuild": "rimraf build && mkdir ./build && mkdir ./build",
+    "prebuild": "rimraf build && mkdir ./build",
     "build": "cp -r src/ ./build && cp package.json ./build/ && cp yarn.lock ./build/",
     "server": "nodemon ./src/index.js",
     "start": "env-cmd ./.env concurrently \"npm run server\"",
