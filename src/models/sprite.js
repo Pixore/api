@@ -15,7 +15,7 @@ const spriteSchema = new Schema({
   available: Boolean,
   file: String,
   preview: String
-})
+}, {timestamps: true})
 
 spriteSchema.statics.getAll = function (cb) {
   return this.find({available: true, private: false}, cb).select({

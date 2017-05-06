@@ -30,7 +30,7 @@ const schema = {
   }
 }
 
-const userSchema = new mongoose.Schema(schema)
+const userSchema = new mongoose.Schema(schema, {timestamps: true})
 const querySchema = new querymen.Schema(
   _.assign(
     _.omit(schema, 'email', 'twitterID', 'profileImage'),

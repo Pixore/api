@@ -2,10 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const paletteSchema = new Schema({
-  name: {
-    type: String,
-    required: true
-  },
+  name: {type: String, required: true},
   user: {type: Schema.Types.ObjectId, ref: 'User'},
   private: Boolean,
   colors: {
@@ -17,11 +14,8 @@ const paletteSchema = new Schema({
       message: '{PATH} is empty'
     }
   },
-  available: {
-    type: Boolean,
-    default: true
-  }
-})
+  available: {type: Boolean, default: true}
+}, {timestamps: true})
 
 paletteSchema.statics.getAll = function (cb) {
   return this.find({available: true}, cb).select({

@@ -28,6 +28,7 @@ const spriteSchema = Joi.object().keys({
 exports.getPublic = () =>
   Sprite.find({private: false})
     .select({file: 0, history: 0, private: 0})
+    .sort({createdAt: -1})
     .populate('user username displayName profileImage _id')
 
 exports.create = data =>
